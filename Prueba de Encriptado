@@ -1,0 +1,60 @@
+// [32, 126] rango a utilizar
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+using namespace std;
+const int MAX = 126;
+const int MIN = 32;
+const int D = MAX - MIN; // 126 -32
+
+void generaVectorDesplaRelativoYEncriptaYMuestra(string const& nombreArchivo);
+void nuevosValores(vector <char> & u, vector <int> const& v);
+void muestraNuevoCodigo(vector <char> const& u);
+
+int main() {
+	string nombreArchivo;
+	cin >> nombreArchivo;
+	generaVectorDesplaRelativoYEncriptaYMuestra(nombreArchivo);
+
+	system("pause");
+	return 0;
+}
+
+
+void generaVectorDesplaRelativoYEncriptaYMuestra(string const& nombreArchivo) {
+	ifstream archivo;
+	archivo.open(nombreArchivo);
+	if (!archivo.is_open()) cout << "No se pudo abrir el archivo \n";
+	else {
+		int i = 0;
+		char aux;
+		vector <int> v;
+		vector <char> u;
+		archivo >> aux;
+			while (!archivo.eof()) {
+				u.push_back(aux);
+				v.push_back(aux % D);
+				archivo >> aux;
+				++i;
+		}
+			nuevosValores(u, v);
+			muestraNuevoCodigo(u);
+			archivo.close();
+	}
+}
+
+void nuevosValores(vector <char> & u, vector <int> const& v) {
+	int nuevoCodigo;
+	for (int i = 0; i < v.size(); ++i) {
+		nuevoCodigo = u[i] + v[i];
+		if (nuevoCodigo > MAX) nuevoCodigo = MIN + nuevoCodigo % MAX;
+		u[i] = char(nuevoCodigo);
+	}
+}
+
+void muestraNuevoCodigo(vector <char> const& u) {
+	for (int i = 0; i < u.size(); ++i) {
+		cout << u[i];
+	}
+}
